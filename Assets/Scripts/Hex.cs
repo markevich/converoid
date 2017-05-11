@@ -8,8 +8,6 @@ public class Hex {
 	//R - row
 	public int R;
 	public int S;
-
-	public int radius = 1;
 	public Hex(int column, int row){
 		this.Q = column;
 		this.R = row;
@@ -17,23 +15,30 @@ public class Hex {
 	}
 
 	public Vector3 Position(){
-		var x = HexHorizontalSpacing() * (this.Q + this.R/2f);
-		var y = HexVerticalSpacing() * this.R;
+		var x = HexHorizontalSpacing * (this.Q + this.R/2f);
+		var y = HexVerticalSpacing * this.R;
 
 		return new Vector3(x, y ,0);
 	}
 
-	public float HexWidth(){
-		return Mathf.Sqrt(3)/2f * HexHeight();
+	private readonly float WIDTH_MULTIPLIER = Mathf.Sqrt(3)/2f;
+	public float HexWidth{
+		get { return WIDTH_MULTIPLIER * HexHeight; }
 	}
-	public int HexHeight(){
-		return radius * 2;
+	public int HexHeight{
+		get{
+			//radius(1) * 2
+			return 2;
+		}
 	}
-	public float HexVerticalSpacing(){
-		return HexHeight() * 0.75f;
+	public float HexVerticalSpacing{
+		get{
+			//HexHeight * 0.75f
+			return 1.5f;
+		}
 	}
 
-	public float HexHorizontalSpacing(){
-		return HexWidth();
+	public float HexHorizontalSpacing{
+		get { return HexWidth; }
 	}
 }

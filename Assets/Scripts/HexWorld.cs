@@ -5,17 +5,17 @@ using UnityEngine;
 public class HexWorld : MonoBehaviour {
 
 	public GameObject HexPrefab;
+	public int MapRadius = 10;
 	void Start () {
-		int map_radius = 10;
-
-		for (int q = -map_radius; q <= map_radius; q++) {
-			int r1 = Mathf.Max(-map_radius, -q - map_radius);
-			int r2 = Mathf.Min(map_radius, -q + map_radius);
+		for (int q = -MapRadius; q <= MapRadius; q++) {
+			int r1 = Mathf.Max(-MapRadius, -q - MapRadius);
+			int r2 = Mathf.Min(MapRadius, -q + MapRadius);
 			for (int r = r1; r <= r2; r++) {
 				var hexn = new Hex(q, r);
 				Instantiate(HexPrefab, hexn.Position(), Quaternion.identity);
 			}
 		}
+		// StaticBatchingUtility.Combine( this.gameObject );
 	}
 	
 	// Update is called once per frame
