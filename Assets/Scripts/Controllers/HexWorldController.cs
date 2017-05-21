@@ -8,48 +8,64 @@ namespace Controllers
 {
     public class HexWorldController : MonoBehaviour
     {
-        public Dictionary<string, GameObject> World;
-        public GameObject HexPrefab;
-        public int MapRadius = 10;
+        public Dictionary<string, GameObject> world;
+        public GameObject hexPrefab;
+        public int mapRadius = 10;
+
+        public static HexWorldController Instance;
         void Start()
         {
-            World = new Dictionary<string, GameObject>();
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            world = new Dictionary<string, GameObject>();
 
-            StartCoroutine(GenerateWorld());
+            GenerateWorld();
         }
 
-        IEnumerator GenerateWorld()
+        void GenerateWorld()
         {
-            for (int q = -MapRadius; q <= MapRadius; q++)
+            for (int q = -mapRadius; q <= mapRadius; q++)
             {
-                int r1 = Mathf.Max(-MapRadius, -q - MapRadius);
-                int r2 = Mathf.Min(MapRadius, -q + MapRadius);
+                int r1 = Mathf.Max(-mapRadius, -q - mapRadius);
+                int r2 = Mathf.Min(mapRadius, -q + mapRadius);
                 for (int r = r1; r <= r2; r++)
                 {
-                    var HexCoordModel = new HexCoordModel(q, r);
-
-                    var instance = (GameObject)Instantiate(HexPrefab, HexCoordModel.Position(), Quaternion.identity, GameObject.Find("Tiles").transform);
-                    instance.GetComponent<HexModel>().HexCoordModel = HexCoordModel;
-                    instance.name = String.Format("Hex ({0}, {1})", q, r);
-                    World.Add(HexCoordModel.ToString(), instance);
+                    CreateHex(q, r);
                 }
-                yield return new WaitForSeconds(0.01f);
 
             }
             // StaticBatchingUtility.Combine( this.gameObject );
         }
+
+        private void CreateHex(int q, int r)
+        {
+            var hexCoordModel = new HexCoordModel(q, r);
+
+            var instance = (GameObject)Instantiate(hexPrefab, hexCoordModel.Position(), Quaternion.identity, GameObject.Find("Tiles").transform);
+            instance.GetComponent<HexModel>().hexCoordModel = hexCoordModel;
+            instance.name = String.Format("Hex ({0}, {1})", q, r);
+            world.Add(hexCoordModel.ToString(), instance);
+        }
+
         // Update is called once per frame
         void Update()
         {
-            Vector2 mousePosition = Input.mousePosition;
-            var worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        }
 
-            var hexPosition = HexCoordModel.AtPosition(worldPosition).ToString();
-            if (World.ContainsKey(hexPosition))
+        public HexModel GetHexAtWorldCoord(Vector3 worldCoord)
+        {
+            var hexCoord = HexCoordModel.AtPosition(worldCoord);
+            var hexCoordKey = hexCoord.ToString();
+            if (!world.ContainsKey(hexCoordKey))
             {
-                var selectedHexGO = World[hexPosition];
-                selectedHexGO.GetComponent<HexModel>().Selected = true;
+                CreateHex(hexCoord.q, hexCoord.r);
             }
+            
+            var selectedHexGO = world[hexCoordKey];
+            var model = selectedHexGO.GetComponent<HexModel>();
+            return model;
         }
 
     }

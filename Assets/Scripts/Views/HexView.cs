@@ -7,13 +7,13 @@ namespace Views
 {
     public class HexView : MonoBehaviour
     {
-        private HexModel Model;
+        private HexModel model;
         void Start(){
-            Model = GetComponent<HexModel>();
+            model = GetComponent<HexModel>();
         }
         void OnDrawGizmos()
         {
-            this.transform.GetComponentInChildren<TextMesh>().text = Model.HexCoordModel.ToString();
+            this.transform.GetComponentInChildren<TextMesh>().text = model.hexCoordModel.ToString();
         }
     }
 }

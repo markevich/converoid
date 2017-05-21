@@ -18,6 +18,10 @@ public class Application : MonoBehaviour {
     public static Application Instance { get; protected set; }
     void Start()
     {
+        if(Instance != null)
+        {
+            Instance = this;
+        }
         allControllers = new List<ApplicationController>();
 
         rootModel = GameObject.FindObjectOfType<ApplicationModel>();
