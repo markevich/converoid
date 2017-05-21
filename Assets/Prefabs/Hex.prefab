@@ -66,7 +66,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1733134104282182}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.24, y: 0.18, z: 0}
+  m_LocalPosition: {x: -0.18, y: 0.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4199610407478586}
@@ -113,7 +113,7 @@ TextMesh:
   m_GameObject: {fileID: 1733134104282182}
   m_Text: 
   m_OffsetZ: 0
-  m_CharacterSize: 0.18
+  m_CharacterSize: 0.12
   m_LineSpacing: 1
   m_Anchor: 0
   m_Alignment: 1
@@ -136,10 +136,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3fb8f0267824280a81ff2f3c8a6af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HexPosition:
-    Q: 0
-    R: 0
-    S: 0
+  HexCoord:
+    q: 0
+    r: 0
+  Selected: 0
+  previouslySelected: 0
 --- !u!212 &212678947542466740
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -172,11 +173,11 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 49bd354330b044fa2ac06ce70fd63706, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 28e7cfa2d31b948b5a448d6050dd4752, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
