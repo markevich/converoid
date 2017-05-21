@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Hex {
+namespace Models {
     /// <summary>
     /// Hexagon grid coordinate.
     /// </summary>
@@ -12,7 +12,7 @@ namespace Hex {
     /// When converting to and from Unity coordinates, the length of a hexagon side is 1 unit.
     /// </remarks>
     [Serializable]
-    public struct HexCoord {
+    public struct HexCoordModel {
 
         /// <summary>
         /// Position on the q axis.
@@ -26,11 +26,11 @@ namespace Hex {
         public int r;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Settworks.Hexagons.HexCoord"/> struct.
+        /// Initializes a new instance of the <see cref="Settworks.Hexagons.HexCoordModel"/> struct.
         /// </summary>
         /// <param name="q">Position on the q axis.</param>
         /// <param name="r">Position on the r axis.</param>
-        public HexCoord(int q, int r) {
+        public HexCoordModel(int q, int r) {
             this.q = q;
             this.r = r;
         }
@@ -118,11 +118,11 @@ namespace Hex {
         /// Neighbor 0 is to the right, others proceed counterclockwise.
         /// </remarks>
         /// <param name="index">Index of the desired neighbor. Cyclically constrained 0..5.</param>
-        public HexCoord Neighbor(int index) {
+        public HexCoordModel Neighbor(int index) {
             return NeighborVector(index) + this;
         }
         
-        public HexCoord PolarNeighbor(bool CCW = false) {
+        public HexCoordModel PolarNeighbor(bool CCW = false) {
             if (q > 0) {
                 if (r < 0) {
                     if (q > -r) return this + neighbors[CCW? 1: 4];
@@ -153,8 +153,8 @@ namespace Hex {
         /// Neighbor 0 is to the right, others proceed counterclockwise.
         /// </remarks>
         /// <param name="first">Index of the first neighbor to enumerate.</param>
-        public IEnumerable<HexCoord> Neighbors(int first = 0) {
-            foreach (HexCoord hex in NeighborVectors(first))
+        public IEnumerable<HexCoordModel> Neighbors(int first = 0) {
+            foreach (HexCoordModel hex in NeighborVectors(first))
                 yield return hex + this;
         }
 
@@ -297,18 +297,18 @@ namespace Hex {
         /// Rotate around 0,0 in sextant increments.
         /// </summary>
         /// <returns>
-        /// A new <see cref="Settworks.Hexagons.HexCoord"/> representing this one after rotation.
+        /// A new <see cref="Settworks.Hexagons.HexCoordModel"/> representing this one after rotation.
         /// </returns>
         /// <param name="sextants">How many sextants to rotate by.</param>
-        public HexCoord SextantRotation(int sextants) {
+        public HexCoordModel SextantRotation(int sextants) {
             if (this == origin) return this;
             sextants = NormalizeRotationIndex(sextants, 6);
             if (sextants == 0) return this;
-            if (sextants == 1) return new HexCoord(-r, -Z);
-            if (sextants == 2) return new HexCoord(Z, q);
-            if (sextants == 3) return new HexCoord(-q, -r);
-            if (sextants == 4) return new HexCoord(r, Z);
-            return new HexCoord(-Z, -q);
+            if (sextants == 1) return new HexCoordModel(-r, -Z);
+            if (sextants == 2) return new HexCoordModel(Z, q);
+            if (sextants == 3) return new HexCoordModel(-q, -r);
+            if (sextants == 4) return new HexCoordModel(r, Z);
+            return new HexCoordModel(-Z, -q);
         }
 
         /// <summary>
@@ -318,20 +318,20 @@ namespace Hex {
         /// The cubic axes are "diagonal" to the hexagons, passing through two opposite corners.
         /// </remarks>
         /// <param name="axis">A corner index through which the axis passes.</param>
-        /// <returns>A new <see cref="Settworks.Hexagons.HexCoord"/> representing this one after mirroring.</returns>
-        public HexCoord Mirror(int axis = 1) {
+        /// <returns>A new <see cref="Settworks.Hexagons.HexCoordModel"/> representing this one after mirroring.</returns>
+        public HexCoordModel Mirror(int axis = 1) {
             if (this == origin) return this;
             axis = NormalizeRotationIndex(axis, 3);
-            if (axis == 0) return new HexCoord(r, q);
-            if (axis == 1) return new HexCoord(Z, r);
-            return new HexCoord(q, Z);
+            if (axis == 0) return new HexCoordModel(r, q);
+            if (axis == 1) return new HexCoordModel(Z, r);
+            return new HexCoordModel(q, Z);
         }
 
         /// <summary>
         /// Scale as a vector, truncating result.
         /// </summary>
-        /// <returns>This <see cref="Settworks.Hexagons.HexCoord"/> after scaling.</returns>
-        public HexCoord Scale(float factor) {
+        /// <returns>This <see cref="Settworks.Hexagons.HexCoordModel"/> after scaling.</returns>
+        public HexCoordModel Scale(float factor) {
             q = (int)(q * factor);
             r = (int)(r * factor);
             return this;
@@ -339,8 +339,8 @@ namespace Hex {
         /// <summary>
         /// Scale as a vector.
         /// </summary>
-        /// <returns>This <see cref="Settworks.Hexagons.HexCoord"/> after scaling.</returns>
-        public HexCoord Scale(int factor) {
+        /// <returns>This <see cref="Settworks.Hexagons.HexCoordModel"/> after scaling.</returns>
+        public HexCoordModel Scale(int factor) {
             q *= factor;
             r *= factor;
             return this;
@@ -356,7 +356,7 @@ namespace Hex {
         /// Determines whether this hex is within a specified rectangle.
         /// </summary>
         /// <returns><c>true</c> if this instance is within the specified rectangle; otherwise, <c>false</c>.</returns>
-        public bool IsWithinRectangle(HexCoord cornerA, HexCoord cornerB) {
+        public bool IsWithinRectangle(HexCoordModel cornerA, HexCoordModel cornerB) {
             if (r > cornerA.r && r > cornerB.r || r < cornerA.r && r < cornerB.r)
                 return false;
             bool reverse = cornerA.O > cornerB.O;	// Travel right to left.
@@ -410,7 +410,7 @@ namespace Hex {
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents the current <see cref="Settworks.Hexagons.HexCoord"/>.
+        /// Returns a <see cref="System.String"/> that represents the current <see cref="Settworks.Hexagons.HexCoordModel"/>.
         /// </summary>
         /// <remarks>
         /// Matches the formatting of <see cref="UnityEngine.Vector2.ToString()"/>.
@@ -424,14 +424,14 @@ namespace Hex {
          */
 
         /// <summary>
-        /// HexCoord at (0,0)
+        /// HexCoordModel at (0,0)
         /// </summary>
-        public static readonly HexCoord origin = default(HexCoord);
+        public static readonly HexCoordModel origin = default(HexCoordModel);
         
         /// <summary>
         /// Distance between two hexes.
         /// </summary>
-        public static int Distance(HexCoord a, HexCoord b) {
+        public static int Distance(HexCoordModel a, HexCoordModel b) {
             return (a - b).AxialLength();
         }
 
@@ -459,7 +459,7 @@ namespace Hex {
         /// Neighbor 0 is to the right, others proceed counterclockwise.
         /// </remarks>
         /// <param name="index">Index of the desired neighbor vector. Cyclically constrained 0..5.</param>
-        public static HexCoord NeighborVector(int index)
+        public static HexCoordModel NeighborVector(int index)
         { return neighbors[NormalizeRotationIndex(index, 6)]; }
 
         /// <summary>
@@ -469,7 +469,7 @@ namespace Hex {
         /// Neighbor 0 is to the right, others proceed counterclockwise.
         /// </remarks>
         /// <param name="first">Index of the first neighbor vector to enumerate.</param>
-        public static IEnumerable<HexCoord> NeighborVectors(int first = 0) {
+        public static IEnumerable<HexCoordModel> NeighborVectors(int first = 0) {
             first = NormalizeRotationIndex(first, 6);
             for (int i = first; i < 6; i++)
                 yield return neighbors[i];
@@ -548,29 +548,29 @@ namespace Hex {
         /// <summary>
         /// <see cref="Settworks.Hexagons.HexCoord"/> containing a Unity position.
         /// </summary>
-        public static HexCoord AtPosition(Vector2 position)
+        public static HexCoordModel AtPosition(Vector2 position)
         { return FromQRVector(VectorXYtoQR(position)); }
         
         /// <summary>
-        /// <see cref="Settworks.Hexagons.HexCoord"/> from hexagonal polar coordinates.
+        /// <see cref="Settworks.Hexagons.HexCoordModel"/> from hexagonal polar coordinates.
         /// </summary>
         /// <remarks>
         /// Hexagonal polar coordinates approximate a circle to a hexagonal ring.
         /// </remarks>
         /// <param name="radius">Hex distance from 0,0.</param>
         /// <param name="index">Counterclockwise index.</param>
-        public static HexCoord AtPolar(int radius, int index) {
+        public static HexCoordModel AtPolar(int radius, int index) {
             if (radius == 0) return origin;
             if (radius < 0) radius = -radius;
             index = NormalizeRotationIndex(index, radius * 6);
             int sextant = index / radius;
             index %= radius;
-            if (sextant == 0) return new HexCoord(radius - index, index);
-            if (sextant == 1) return new HexCoord(-index, radius);
-            if (sextant == 2) return new HexCoord(-radius, radius - index);
-            if (sextant == 3) return new HexCoord(index - radius, -index);
-            if (sextant == 4) return new HexCoord(index, -radius);
-            return new HexCoord(radius, index - radius);
+            if (sextant == 0) return new HexCoordModel(radius - index, index);
+            if (sextant == 1) return new HexCoordModel(-index, radius);
+            if (sextant == 2) return new HexCoordModel(-radius, radius - index);
+            if (sextant == 3) return new HexCoordModel(index - radius, -index);
+            if (sextant == 4) return new HexCoordModel(index, -radius);
+            return new HexCoordModel(radius, index - radius);
         }
 
         /// <summary>
@@ -586,25 +586,25 @@ namespace Hex {
         }
 
         /// <summary>
-        /// <see cref="Settworks.Hexagons.HexCoord"/> from offset coordinates.
+        /// <see cref="Settworks.Hexagons.HexCoordModel"/> from offset coordinates.
         /// </summary>
         /// <remarks>
         /// Offset coordinates are a common alternative for hexagons, allowing pseudo-square grid operations.
         /// This conversion assumes an offset of x = q + r/2.
         /// </remarks>
-        public static HexCoord AtOffset(int x, int y) {
-            return new HexCoord(x - (y>>1), y);
+        public static HexCoordModel AtOffset(int x, int y) {
+            return new HexCoordModel(x - (y>>1), y);
         }
 
         /// <summary>
-        /// <see cref="Settworks.Hexagons.HexCoord"/> containing a floating-point q,r vector.
+        /// <see cref="Settworks.Hexagons.HexCoordModel"/> containing a floating-point q,r vector.
         /// </summary>
         /// <remarks>
         /// Hexagonal geometry makes normal rounding inaccurate. If working with floating-point
         /// q,r vectors, use this method to accurately convert them back to
-        /// <see cref="Settworks.Hexagons.HexCoord"/>.
+        /// <see cref="Settworks.Hexagons.HexCoordModel"/>.
         /// </remarks>
-        public static HexCoord FromQRVector(Vector2 QRvector) {
+        public static HexCoordModel FromQRVector(Vector2 QRvector) {
             float z = -QRvector.x -QRvector.y;
             int ix = (int)Math.Round(QRvector.x);
             int iy = (int)Math.Round(QRvector.y);
@@ -618,7 +618,7 @@ namespace Hex {
                 else if (dy >= dz)
                     iy = -ix-iz;
             }
-            return new HexCoord(ix, iy);
+            return new HexCoordModel(ix, iy);
         }
 
         /// <summary>
@@ -638,12 +638,12 @@ namespace Hex {
         /// <summary>
         /// Get the corners of a QR-space rectangle containing every cell touching an XY-space rectangle.
         /// </summary>
-        public static HexCoord[] CartesianRectangleBounds(Vector2 cornerA, Vector2 cornerB) {
+        public static HexCoordModel[] CartesianRectangleBounds(Vector2 cornerA, Vector2 cornerB) {
             Vector2 min = new Vector2(Math.Min(cornerA.x, cornerB.x), Math.Min(cornerA.y, cornerB.y));
             Vector2 max = new Vector2(Math.Max(cornerA.x, cornerB.x), Math.Max(cornerA.y, cornerB.y));
-            HexCoord[] results = {
-                HexCoord.AtPosition(min),
-                HexCoord.AtPosition(max)
+            HexCoordModel[] results = {
+                HexCoordModel.AtPosition(min),
+                HexCoordModel.AtPosition(max)
             };
             Vector2 pos = results[0].Position();
             if (pos.y - 0.5f >= min.y)
@@ -663,20 +663,20 @@ namespace Hex {
          */
 
         // Cast to Vector2 in QR space. Explicit to avoid QR/XY mix-ups.
-        public static explicit operator Vector2(HexCoord h)
+        public static explicit operator Vector2(HexCoordModel h)
         { return new Vector2(h.q, h.r); }
         // +, -, ==, !=
-        public static HexCoord operator +(HexCoord a, HexCoord b)
-        { return new HexCoord(a.q+b.q, a.r+b.r); }
-        public static HexCoord operator -(HexCoord a, HexCoord b)
-        { return new HexCoord(a.q-b.q, a.r-b.r); }
-        public static bool operator ==(HexCoord a, HexCoord b)
+        public static HexCoordModel operator +(HexCoordModel a, HexCoordModel b)
+        { return new HexCoordModel(a.q+b.q, a.r+b.r); }
+        public static HexCoordModel operator -(HexCoordModel a, HexCoordModel b)
+        { return new HexCoordModel(a.q-b.q, a.r-b.r); }
+        public static bool operator ==(HexCoordModel a, HexCoordModel b)
         { return a.q == b.q && a.r == b.r; }
-        public static bool operator !=(HexCoord a, HexCoord b)
+        public static bool operator !=(HexCoordModel a, HexCoordModel b)
         { return a.q != b.q || a.r != b.r; }
         // Mandatory overrides: Equals(), GetHashCode()
         public override bool Equals(object o)
-        { return (o is HexCoord) && this == (HexCoord)o; }
+        { return (o is HexCoordModel) && this == (HexCoordModel)o; }
         public override int GetHashCode() {
             return q & (int)0xFFFF | r<<16;
         }
@@ -696,13 +696,13 @@ namespace Hex {
         public static readonly float SQRT3 = Mathf.Sqrt(3);
 
         // The directions array. These are private to prevent overwriting elements.
-        static readonly HexCoord[] neighbors = {
-            new HexCoord(1, 0),
-            new HexCoord(0, 1),
-            new HexCoord(-1, 1),
-            new HexCoord(-1, 0),
-            new HexCoord(0, -1),
-            new HexCoord(1, -1)
+        static readonly HexCoordModel[] neighbors = {
+            new HexCoordModel(1, 0),
+            new HexCoordModel(0, 1),
+            new HexCoordModel(-1, 1),
+            new HexCoordModel(-1, 0),
+            new HexCoordModel(0, -1),
+            new HexCoordModel(1, -1)
         };
 
         // Corner locations in XY space. Private for same reason as neighbors.

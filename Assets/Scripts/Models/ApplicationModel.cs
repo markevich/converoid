@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Models
 {
-    public class Application : RootElement
+    public class ApplicationModel: MonoBehaviour
     {
     }
 }

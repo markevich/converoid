@@ -1,25 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Models;
+using Controllers;
+using Views;
 
 public class Application : MonoBehaviour {
     [HideInInspector]
-    public Models.Application rootModel;
+    public ApplicationModel rootModel;
     [HideInInspector]
-    public Views.Application rootView;
+    public ApplicationView rootView;
     [HideInInspector]
-    public Controllers.Application rootController;
+    public ApplicationController rootController;
 
-    private List<Controllers.Application> AllControllers;
+    private List<ApplicationController> allControllers;
+
+    public static Application Instance { get; protected set; }
     void Start()
     {
-        AllControllers = new List<Controllers.Application>();
+        allControllers = new List<ApplicationController>();
 
-        rootModel = GameObject.FindObjectOfType<Models.Application>();
-        rootView = GameObject.FindObjectOfType<Views.Application>();
-        rootController = GameObject.FindObjectOfType<Controllers.Application>();
+        rootModel = GameObject.FindObjectOfType<ApplicationModel>();
+        rootView = GameObject.FindObjectOfType<ApplicationView>();
+        rootController = GameObject.FindObjectOfType<ApplicationController>();
 
-        AllControllers.Add(rootController);
+        allControllers.Add(rootController);
 
     }
 
@@ -28,7 +33,7 @@ public class Application : MonoBehaviour {
     // instance.
     public void Notify(string p_event_path, Object p_target, params object[] p_data)
     {
-        foreach(var c in AllControllers)
+        foreach(var c in allControllers)
         {
             c.OnNotification(p_event_path,p_target,p_data);
         }

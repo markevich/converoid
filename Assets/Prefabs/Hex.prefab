@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 4199610407478586}
   - component: {fileID: 212678947542466740}
   - component: {fileID: 114861168684413570}
+  - component: {fileID: 114370083657384522}
   m_Layer: 0
   m_Name: Hex
   m_TagString: Untagged
@@ -125,6 +126,17 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
+--- !u!114 &114370083657384522
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1962389316714120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03a6e31294c41449ebc70cd162fe15e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114861168684413570
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -136,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3fb8f0267824280a81ff2f3c8a6af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HexCoord:
+  HexCoordModel:
     q: 0
     r: 0
   Selected: 0

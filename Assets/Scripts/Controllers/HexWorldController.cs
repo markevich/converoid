@@ -2,44 +2,53 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Models;
 
-namespace Hex{
-    public class HexWorld : MonoBehaviour {
+namespace Controllers
+{
+    public class HexWorldController : MonoBehaviour
+    {
         public Dictionary<string, GameObject> World;
         public GameObject HexPrefab;
         public int MapRadius = 10;
-        void Start () {
+        void Start()
+        {
             World = new Dictionary<string, GameObject>();
-            
+
             StartCoroutine(GenerateWorld());
         }
-        
-        IEnumerator GenerateWorld(){
-            for (int q = -MapRadius; q <= MapRadius; q++) {
+
+        IEnumerator GenerateWorld()
+        {
+            for (int q = -MapRadius; q <= MapRadius; q++)
+            {
                 int r1 = Mathf.Max(-MapRadius, -q - MapRadius);
                 int r2 = Mathf.Min(MapRadius, -q + MapRadius);
-                for (int r = r1; r <= r2; r++) {
-                    var hexCoord = new HexCoord(q, r);
+                for (int r = r1; r <= r2; r++)
+                {
+                    var HexCoordModel = new HexCoordModel(q, r);
 
-                    var instance = (GameObject)Instantiate(HexPrefab, hexCoord.Position(), Quaternion.identity, this.transform);
-                    instance.GetComponent<Hex>().HexCoord = hexCoord;
+                    var instance = (GameObject)Instantiate(HexPrefab, HexCoordModel.Position(), Quaternion.identity, GameObject.Find("Tiles").transform);
+                    instance.GetComponent<HexModel>().HexCoordModel = HexCoordModel;
                     instance.name = String.Format("Hex ({0}, {1})", q, r);
-                    World.Add(hexCoord.ToString(), instance);
+                    World.Add(HexCoordModel.ToString(), instance);
                 }
                 yield return new WaitForSeconds(0.01f);
-                
+
             }
             // StaticBatchingUtility.Combine( this.gameObject );
         }
         // Update is called once per frame
-        void Update () {
+        void Update()
+        {
             Vector2 mousePosition = Input.mousePosition;
             var worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            
-            var hexPosition = HexCoord.AtPosition(worldPosition).ToString();
-            if (World.ContainsKey(hexPosition)){
+
+            var hexPosition = HexCoordModel.AtPosition(worldPosition).ToString();
+            if (World.ContainsKey(hexPosition))
+            {
                 var selectedHexGO = World[hexPosition];
-                selectedHexGO.GetComponent<Hex>().Selected = true;
+                selectedHexGO.GetComponent<HexModel>().Selected = true;
             }
         }
 

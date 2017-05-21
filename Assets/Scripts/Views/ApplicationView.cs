@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Views
 {
-    public class Application : RootElement
+    public class ApplicationView : MonoBehaviour
     {
     }
 }

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hex{
-    public class Hex : MonoBehaviour {
+namespace Models{
+    public class HexModel : MonoBehaviour {
         // Use this for initialization
-        public HexCoord HexCoord;
+        public HexCoordModel HexCoordModel;
         public bool Selected, previouslySelected = false;
         void Start () {
             
@@ -22,9 +22,5 @@ namespace Hex{
             Selected = false;
         }
 
-        void OnDrawGizmos()
-        {
-            this.transform.GetComponentInChildren<TextMesh>().text = HexCoord.ToString();
-        }
     }
 }
