@@ -1,4 +1,4 @@
 # Сonveroid
 Hex based factorio
 
-![Main scene](/Artwork/Screenshots/MainScene.png?raw=true "Optional Title")
+![Main scene](/Artwork/Screenshots/Converoid.jpg?raw=true "Optional Title")
