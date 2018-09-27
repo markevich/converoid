@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Models {
+namespace Hex {
     /// <summary>
     /// Hexagon grid coordinate.
     /// </summary>

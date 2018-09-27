@@ -22,9 +22,8 @@ namespace Player.Systems {
                 entity.Rigidbody2D.AddRelativeForce (velocity * 30);
 
                 Vector2 positionOnScreen = Camera.main.WorldToViewportPoint (entity.Transform.position);
-                Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(UnityEngine.Input.mousePosition);
                 float angle = AngleBetweenTwoPoints(positionOnScreen, entity.PlayerInput.MouseOnScreenPosition) + 90;
-                var lerpedRotation = Mathf.MoveTowardsAngle(entity.Rigidbody2D.rotation, angle, 300 * deltaTime);
+                var lerpedRotation = Mathf.MoveTowardsAngle(entity.Rigidbody2D.rotation, angle, 400 * deltaTime);
                 entity.Rigidbody2D.MoveRotation(lerpedRotation);
             }
         }
